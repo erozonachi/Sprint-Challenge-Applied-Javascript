@@ -6,11 +6,14 @@ class Carousel {
         this.currentIndex = 1;
         this.images = this.carousel.querySelectorAll(`img`);
         this.slideTotal = this.images.length;
+        this.loop = 0;
 
         this.leftBtn.addEventListener(`click`, this.slideLeft);
         this.rightBtn.addEventListener(`click`, this.slideRight);
 
         document.querySelector(`img[data-slide="1"]`).style.display = `flex`;
+
+        this.loopInfinitely();
     }
 
     slideLeft = () => {
@@ -36,6 +39,20 @@ class Carousel {
         selectedImage.style.display = `flex`;
         selectedImage.style.opacity = 0;
         TweenLite.to(selectedImage, 1.5, {opacity: 1});
+    }
+
+    loopInfinitely = () => {
+        document.addEventListener(`keydown`, (e) => {
+            if ([`ArrowLeft`, `ArrowUp`, `ArrowRight`, `ArrowDown`].includes(e.key)) {
+                this.loop = setInterval(() => {
+                    if ([`ArrowLeft`, `ArrowUp`].includes(e.key)) {
+                        this.slideLeft();
+                    } else {
+                        this.slideRight();
+                    }
+                }, 3000);
+            }
+        })
     }
 }
 
